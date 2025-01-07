@@ -3,6 +3,7 @@ import Login from './components/Auth/Login'
 import EmployeeDashboard from './components/Dashboard/EmployeeDashboard'
 import AdminDashboard from './components/Dashboard/AdminDashboard'
 import { AuthContext } from './context/AuthProvider'
+import { setLocalStorage } from './utils/localStorage'
 
 const App = () => {
 
@@ -12,7 +13,7 @@ const App = () => {
 
   useEffect(()=>{
     const loggedInUser = localStorage.getItem('loggedInUser')
-    
+    setLocalStorage()
     if(loggedInUser){
       const userData = JSON.parse(loggedInUser)
       setUser(userData.role)
@@ -23,10 +24,10 @@ const App = () => {
 
 
   const handleLogin = (email, password) => {
-    if (email == 'admin@me.com' && password == '123') {
+    if (email == 'admin@gmail.com' && password == '123') {
       setUser('admin')
       localStorage.setItem('loggedInUser', JSON.stringify({ role: 'admin' }))
-    } else if (userData) {
+    } else if (userData && userData.find((e) => email == e.email && e.password == password)) {
       const employee = userData.find((e) => email == e.email && e.password == password)
       if (employee) {
         setUser('employee')
